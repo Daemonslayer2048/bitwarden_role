@@ -2,7 +2,7 @@
   include: install.yaml
 
 - name: Include Docker
-  include: ../Shared/Docker/main.yaml
+  include: docker.yaml
 
 - name: Include Firewalld
   include: firewalld.yaml

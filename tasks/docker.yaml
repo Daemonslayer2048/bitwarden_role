@@ -1,0 +1,37 @@
+- name: Add Docker Repo
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+# For what is Docker without Docker Compose?
+- name: Add Docker Compose
+  ansible.builtin.get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode: 0777
+
+- name: Symlink docker-compose to /usr/bin
+  ansible.builtin.file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    owner: root
+    group: root
+    state: link
+
+- name: Install Docker
+  ansible.builtin.package:
+    name: docker-ce
+    state: latest
+
+- name: Add SUDO User to Docker Group
+  ansible.builtin.user:
+    name: "{{ ansible_facts['env']['SUDO_USER'] }}"
+    groups: docker
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
