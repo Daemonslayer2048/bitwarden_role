@@ -1,0 +1,19 @@
+- name: Include Bitwarden Base Packages
+  include: install.yaml
+
+- name: Include Docker
+  include: ../Shared/Docker/main.yaml
+
+- name: Include Firewalld
+  include: firewalld.yaml
+
+- name: Setup BitWarden
+  include: warden_setup.yaml
+
+- name: Add Caddy Config for Bitwarden
+  delegate_to: "{{ groups['Caddy'][0] }}"
+  ansible.builtin.template:
+    src: ./templates/caddy_config.j2
+    dest: /etc/caddy/sites-enabled/bitwarden_config
+  notify:
+    - Restart Caddy

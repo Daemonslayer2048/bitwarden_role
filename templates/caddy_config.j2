@@ -1,0 +1,3 @@
+{{ ansible_facts['hostname'] }}.{{ host_public_domain }} {
+  reverse_proxy *  http://{{ groups['BitWarden'][0] }}
+}

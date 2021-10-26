@@ -1,0 +1,12 @@
+# Host Section
+host_name: warden
+host_public_domain: null.com
+
+# Matrix Section
+bitwarden_user: warden
+bitwarden_user_home: /srv/warden
+bitwarden_use_ssl: false
+bitwarden_generate_ssl: false
+bitwarden_database_name: vault
+bitwarden_instalation_id:
+bitwarden_instalation_key:

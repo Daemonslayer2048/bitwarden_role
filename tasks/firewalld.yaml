@@ -1,0 +1,28 @@
+- name: Allow Caddy Through Firewalld
+  ansible.posix.firewalld:
+    rich_rule: rule family="ipv4" source address="{{ groups['Caddy'][0] }}" port port="80" protocol="tcp" accept
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+  notify:
+    - Restart Firewalld
+
+- name: Force firewalld to use IPTables
+  ansible.builtin.lineinfile:
+    path: /etc/firewalld/firewalld.conf
+    state: present
+    regexp: '^FirewallBackend=nftables'
+    line: "FirewallBackend=iptables"
+  notify:
+    - Restart Firewalld
+
+- name: Remove Docker Interface from public Zone
+  ansible.posix.firewalld:
+    permanent: true
+    immediate: true
+    zone: public
+    interface: docker0
+    state: disabled
+  notify:
+    - Restart Firewalld

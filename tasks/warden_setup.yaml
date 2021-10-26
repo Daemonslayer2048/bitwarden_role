@@ -1,0 +1,18 @@
+- name: Create BitWarden User
+  ansible.builtin.user:
+    name: "{{ bitwarden_user }}"
+    comment: BitWarden Service User
+    home: "{{ bitwarden_user_home }}"
+    groups: docker
+    system: yes
+    shell: /sbin/nologin
+
+- name: Download BitWarden Script
+  become_user: "{{ bitwarden_user }}"
+  become: true
+  ansible.builtin.get_url:
+    owner: "{{ bitwarden_user }}"
+    group: "{{ bitwarden_user }}"
+    mode: 0700
+    url: https://go.btwrdn.co/bw-sh
+    dest: "{{ bitwarden_user_home }}/bitwarden.sh"
