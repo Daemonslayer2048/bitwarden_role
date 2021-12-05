@@ -1,38 +1,45 @@
-Role Name
-=========
+# Ansible Bitwarden Role
+This roles setups up a [bitwarden](https://bitwarden.com/) server.
 
-A brief description of the role goes here.
+## Requirements
+### ansible-galaxy
+__Collections:__
+  - community.general
 
-Requirements
-------------
+__Roles:__
+  - [daemonslayer2048.common](https://github.com/Daemonslayer2048/common_role)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Variables
+| Variable | Type | Required | Default | Example |
+|    -     |   -  |     -    |    -    |    -    |
+| [hostname](#hostname) | string | True | N/A | warden |
+| [host_public_domain](#host_public_domain) | string | True | null.com | null.com |
+| [bitwarden_user](#bitwarden_user) | string | True | warden | warden |
+| [bitwarden_user_home](#bitwarden_user_home) | string | True | /srv/warden | /srv/warden |
 
-Role Variables
---------------
+### Variable Summaries:
+#### hostname
+This is used in multiple locations to set the FQDN of the server and to be used in setting the public URL for the server when the [Caddy reverse proxy role](https://github.com/Daemonslayer2048/caddy_role) is deployed.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+#### host_public_domain
+Completes the domain portion of the public URL with the help of the variable above.
 
-Dependencies
-------------
+#### bitwarden_user  
+The name of the user bitwarden will run as on the host
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+#### bitwarden_user_home  
+The home of the bitwarden service user
 
-Example Playbook
-----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+# Notes:
+## Testing Issues
+  - Selinux Modules can not be tested in podman so these tests are performed outside of the stesting suite :(
+## Inability to finish role install
+ Running the bitwarden install script in ansible appears to run into an infinite hang time issue. This needs to be looked into further but as of now the install script needs to be ran manually.
+## Future variables
+  - Unused variables now:
+    - bitwarden_use_ssl
+    - bitwarden_generate_ssl
+    - bitwarden_database_name
+    - bitwarden_instalation_id
+    - bitwarden_instalation_key

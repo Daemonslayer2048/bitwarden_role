@@ -17,3 +17,4 @@
     dest: /etc/caddy/sites-enabled/bitwarden_config
   notify:
     - Restart Caddy
+  when: groups['Caddy'] is defined and (groups['Caddy'] | length > 0)
